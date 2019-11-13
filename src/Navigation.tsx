@@ -1,10 +1,10 @@
 import React from "react";
 import { ListItem, ListItemIcon, ListItemText, List } from "@material-ui/core";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PeopleIcon from "@material-ui/icons/People";
-import BarChartIcon from "@material-ui/icons/BarChart";
-import LayersIcon from "@material-ui/icons/Layers";
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 export default function Navigation() {
   return (
@@ -17,27 +17,27 @@ export default function Navigation() {
       </ListItem>
       <ListItem button>
         <ListItemIcon>
-          <ShoppingCartIcon />
+          <BusinessCenterIcon />
         </ListItemIcon>
-        <ListItemText primary="Orders" />
+        <ListItemText primary="Sources" />
       </ListItem>
       <ListItem button>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
-        <ListItemText primary="Customers" />
+        <ListItemText primary="Units" />
       </ListItem>
       <ListItem button>
         <ListItemIcon>
-          <BarChartIcon />
+          <AnnouncementIcon />
         </ListItemIcon>
-        <ListItemText primary="Reports" />
+        <ListItemText primary="Command Cards" />
       </ListItem>
       <ListItem button>
         <ListItemIcon>
-          <LayersIcon />
+          <DescriptionIcon />
         </ListItemIcon>
-        <ListItemText primary="Integrations" />
+        <ListItemText primary="Keywords" />
       </ListItem>
     </List>
   );
