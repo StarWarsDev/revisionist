@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  CssBaseline,
-  Container,
-  Grid,
-  Paper
-} from "@material-ui/core";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
+import { CssBaseline, Container, Grid, Paper } from "@material-ui/core";
 
-import AppFrame from "./AppFrame"
+import theme from "./theme";
+import AppFrame from "./AppFrame";
 import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
@@ -48,38 +44,44 @@ const App: React.FC = () => {
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppFrame open={open} onDrawerOpen={handleDrawerOpen} onDrawerClose={handleDrawerClose} />
+    <ThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppFrame
+          open={open}
+          onDrawerOpen={handleDrawerOpen}
+          onDrawerClose={handleDrawerClose}
+        />
 
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Chart />
-              </Paper>
-            </Grid>
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          <Container maxWidth="lg" className={classes.container}>
+            <Grid container spacing={3}>
+              {/* Chart */}
+              <Grid item xs={12} md={8} lg={9}>
+                <Paper className={fixedHeightPaper}>
+                  <Chart />
+                </Paper>
+              </Grid>
 
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid>
+              {/* Recent Deposits */}
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper className={fixedHeightPaper}>
+                  <Deposits />
+                </Paper>
+              </Grid>
 
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
+              {/* Recent Orders */}
+              <Grid item xs={12}>
+                <Paper className={classes.paper}>
+                  <Orders />
+                </Paper>
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
-      </main>
-    </div>
+          </Container>
+        </main>
+      </div>
+    </ThemeProvider>
   );
 };
 
