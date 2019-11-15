@@ -1,4 +1,4 @@
-import Source from "./source";
+import Expansion from "./expansion";
 import { Upgrades } from "./upgrade";
 import { Units } from "./unit";
 
@@ -51,7 +51,11 @@ export interface Keyword {
 }
 
 export default interface LegionData {
-  sources: Source[];
+  sources: Expansion[];
   upgrades: Upgrades;
   units: Units;
+}
+
+export interface LdfNamePair {
+  [ldf: string]: string;
 }

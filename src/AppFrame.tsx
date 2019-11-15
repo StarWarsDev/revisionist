@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -6,12 +6,15 @@ import {
   Toolbar,
   IconButton,
   Drawer,
-  Divider
-} from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+  Divider,
+  Typography,
+  Button,
+  CircularProgress
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
-import Navigation from "./Navigation"
+import Navigation from "./Navigation";
 
 const drawerWidth = 240;
 
@@ -88,19 +91,43 @@ const useStyles = makeStyles(theme => ({
   },
   fixedHeight: {
     height: 240
+  },
+  buttonProgress: {
+    color: "white",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
+  },
+  loginWrapper: {
+    margin: theme.spacing(1),
+    position: "relative"
   }
 }));
 
 interface Props {
-  open: boolean,
-  onDrawerOpen: Function,
-  onDrawerClose: Function
+  authenticated: boolean;
+  authenticating: boolean;
+  open: boolean;
+  onDrawerOpen: Function;
+  onDrawerClose: Function;
+  onLoginClick: Function;
+  onLogoutClick: Function;
 }
 
 export default function AppFrame(props: Props) {
-  const classes = useStyles()
-  const { open, onDrawerOpen, onDrawerClose } = props
-  
+  const classes = useStyles();
+  const {
+    authenticated,
+    authenticating,
+    open,
+    onDrawerOpen,
+    onDrawerClose,
+    onLoginClick,
+    onLogoutClick
+  } = props;
+
   return (
     <React.Fragment>
       <AppBar
@@ -120,6 +147,30 @@ export default function AppFrame(props: Props) {
           >
             <MenuIcon />
           </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            Star Wars Legion Data
+          </Typography>
+          <div className={classes.loginWrapper}>
+            {!authenticated && (
+              <Button
+                color="inherit"
+                onClick={() => onLoginClick()}
+                disabled={authenticating}
+              >
+                Login
+              </Button>
+            )}
+
+            {authenticating && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}
+
+            {authenticated && !authenticating && (
+              <Button color="inherit" onClick={() => onLogoutClick()}>
+                Sign Out
+              </Button>
+            )}
+          </div>
         </Toolbar>
       </AppBar>
 
@@ -130,20 +181,19 @@ export default function AppFrame(props: Props) {
         }}
         open={open}
       >
-
         <div className={classes.toolbarIcon}>
           <IconButton onClick={() => onDrawerClose()}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        
+
         <Divider />
-        
+
         {/* Navigation */}
         <Navigation />
-        
+
         <Divider />
       </Drawer>
     </React.Fragment>
-  )
+  );
 }
