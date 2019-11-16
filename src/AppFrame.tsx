@@ -9,12 +9,15 @@ import {
   Divider,
   Typography,
   Button,
-  CircularProgress
+  CircularProgress,
+  Avatar,
+  Grid
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
 import Navigation from "./Navigation";
+import { GitHubUser } from "./github";
 
 const drawerWidth = 240;
 
@@ -109,6 +112,7 @@ const useStyles = makeStyles(theme => ({
 interface Props {
   authenticated: boolean;
   authenticating: boolean;
+  gitHubUser?: GitHubUser;
   open: boolean;
   onDrawerOpen: Function;
   onDrawerClose: Function;
@@ -121,6 +125,7 @@ export default function AppFrame(props: Props) {
   const {
     authenticated,
     authenticating,
+    gitHubUser,
     open,
     onDrawerOpen,
     onDrawerClose,
@@ -166,9 +171,25 @@ export default function AppFrame(props: Props) {
             )}
 
             {authenticated && !authenticating && (
-              <Button color="inherit" onClick={() => onLogoutClick()}>
-                Sign Out
-              </Button>
+              <Grid container direction="row" alignItems="center" spacing={1}>
+                {gitHubUser && (
+                  <React.Fragment>
+                    <Grid item>
+                      <Typography variant="subtitle2">
+                        {gitHubUser.name}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Avatar src={gitHubUser.avatarUrl} />
+                    </Grid>
+                  </React.Fragment>
+                )}
+                <Grid item>
+                  <Button color="inherit" onClick={() => onLogoutClick()}>
+                    Sign Out
+                  </Button>
+                </Grid>
+              </Grid>
             )}
           </div>
         </Toolbar>

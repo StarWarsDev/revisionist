@@ -10,6 +10,7 @@ import ld from "./legion-data.json";
 import ExpansionGrid from "./ExpansionGrid";
 import Unit from "./model/unit";
 import Upgrade from "./model/upgrade";
+import { getViewer } from "./github";
 
 const CLIENT_ID: string = "123a931c6efe1d179e01";
 const REDIRECT_URI = "http://localhost:3000";
@@ -40,6 +41,9 @@ const App: React.FC = () => {
   const [upgradeNames, setUpgradeNames] = useState({});
   const [authenticating, setAuthenticating] = useState(false);
   const [token, setToken] = useState(sessionStorage.getItem("token") || "");
+  const [gitHubUser, setGitHubUser] = useState(
+    JSON.parse(sessionStorage.getItem("gitHubUser") || "null")
+  );
 
   useEffect(() => {
     localStorage.setItem("open", JSON.stringify(open));
@@ -48,6 +52,10 @@ const App: React.FC = () => {
   useEffect(() => {
     sessionStorage.setItem("token", token);
   }, [token]);
+
+  useEffect(() => {
+    sessionStorage.setItem("gitHubUser", JSON.stringify(gitHubUser));
+  }, [gitHubUser]);
 
   useEffect(() => {
     // build a map of unit ldf / name pairs
@@ -78,12 +86,15 @@ const App: React.FC = () => {
         fetch(`https://swd-gatekeeper.herokuapp.com/authenticate/${code}`)
           .then(response => response.json())
           .then(({ token }) => {
-            setAuthenticating(false);
-            setToken(token);
-            setTimeout(
-              () => (window.location.href = window.location.origin),
-              100
-            );
+            getViewer(token).then(ghUser => {
+              setAuthenticating(false);
+              setToken(token);
+              setGitHubUser(ghUser);
+              setTimeout(
+                () => (window.location.href = window.location.origin),
+                100
+              );
+            });
           });
       }
     }
@@ -96,7 +107,9 @@ const App: React.FC = () => {
 
   const handleLogoutClick = () => {
     setToken("");
+    setGitHubUser(null);
     sessionStorage.removeItem("item");
+    sessionStorage.removeItem("gitHubUser");
     window.location.href = window.location.origin;
   };
 
@@ -110,6 +123,7 @@ const App: React.FC = () => {
         <AppFrame
           authenticated={token !== ""}
           authenticating={authenticating}
+          gitHubUser={gitHubUser}
           open={open}
           onDrawerOpen={handleDrawerOpen}
           onDrawerClose={handleDrawerClose}
