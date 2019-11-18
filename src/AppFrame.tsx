@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -11,8 +11,13 @@ import {
   Button,
   CircularProgress,
   Avatar,
-  Grid
+  Menu,
+  MenuItem,
+  ListItemText,
+  ListItemIcon
 } from "@material-ui/core";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import GitHubIcon from "@material-ui/icons/GitHub";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
@@ -133,6 +138,28 @@ export default function AppFrame(props: Props) {
     onLogoutClick
   } = props;
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleClose();
+    onLogoutClick();
+  };
+
+  const handleProfileClick = () => {
+    handleClose();
+    if (gitHubUser) {
+      window.open(`https://github.com/${gitHubUser.login}`, "_blank");
+    }
+  };
+
   return (
     <React.Fragment>
       <AppBar
@@ -170,26 +197,33 @@ export default function AppFrame(props: Props) {
               <CircularProgress size={24} className={classes.buttonProgress} />
             )}
 
-            {authenticated && !authenticating && (
-              <Grid container direction="row" alignItems="center" spacing={1}>
-                {gitHubUser && (
-                  <React.Fragment>
-                    <Grid item>
-                      <Typography variant="subtitle2">
-                        {gitHubUser.name}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Avatar src={gitHubUser.avatarUrl} />
-                    </Grid>
-                  </React.Fragment>
-                )}
-                <Grid item>
-                  <Button color="inherit" onClick={() => onLogoutClick()}>
-                    Sign Out
-                  </Button>
-                </Grid>
-              </Grid>
+            {authenticated && !authenticating && gitHubUser && (
+              <React.Fragment>
+                <IconButton onClick={handleClick} size="small">
+                  <Avatar src={gitHubUser.avatarUrl} />
+                </IconButton>
+
+                <Menu
+                  id="user-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleProfileClick}>
+                    <ListItemIcon>
+                      <GitHubIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={`@${gitHubUser.login}`} />
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>
+                    <ListItemIcon>
+                      <ExitToAppIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout" />
+                  </MenuItem>
+                </Menu>
+              </React.Fragment>
             )}
           </div>
         </Toolbar>

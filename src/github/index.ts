@@ -1,5 +1,6 @@
 export interface GitHubUser {
   name: string;
+  login: string;
   avatarUrl: string;
 }
 
@@ -8,6 +9,7 @@ export async function getViewer(token: string): Promise<GitHubUser> {
     query {
       viewer {
         name
+        login
         avatarUrl
       }
     }
