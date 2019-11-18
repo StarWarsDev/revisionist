@@ -11,7 +11,9 @@ import {
   Button,
   CircularProgress,
   Avatar,
-  Grid
+  Grid,
+  Link,
+  ButtonGroup
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -171,25 +173,30 @@ export default function AppFrame(props: Props) {
             )}
 
             {authenticated && !authenticating && (
-              <Grid container direction="row" alignItems="center" spacing={1}>
+              <ButtonGroup>
                 {gitHubUser && (
-                  <React.Fragment>
-                    <Grid item>
-                      <Typography variant="subtitle2">
-                        {gitHubUser.name}
-                      </Typography>
+                  <Button
+                    href={`https://github.com/${gitHubUser.login}`}
+                    target="_blank"
+                  >
+                    <Grid
+                      container
+                      direction="row"
+                      alignItems="center"
+                      spacing={1}
+                    >
+                      <Grid item>{gitHubUser.name}</Grid>
+                      <Grid item>
+                        <Avatar src={gitHubUser.avatarUrl} />
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Avatar src={gitHubUser.avatarUrl} />
-                    </Grid>
-                  </React.Fragment>
-                )}
-                <Grid item>
-                  <Button color="inherit" onClick={() => onLogoutClick()}>
-                    Sign Out
                   </Button>
-                </Grid>
-              </Grid>
+                )}
+
+                <Button color="inherit" onClick={() => onLogoutClick()}>
+                  Sign Out
+                </Button>
+              </ButtonGroup>
             )}
           </div>
         </Toolbar>
