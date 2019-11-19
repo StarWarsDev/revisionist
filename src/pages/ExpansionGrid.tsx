@@ -1,8 +1,8 @@
 import React from "react";
-import { LdfNamePair } from "./model";
+import { LdfNamePair } from "../model";
 import { Grid } from "@material-ui/core";
-import ExpansionCard from "./ExpansionCard";
-import Expansion from "./model/expansion";
+import ExpansionCard from "../components/ExpansionCard";
+import Expansion from "../model/expansion";
 
 interface Props {
   expansions: Expansion[];

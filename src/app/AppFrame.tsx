@@ -22,7 +22,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
 import Navigation from "./Navigation";
-import { GitHubUser } from "./github";
+import { GitHubUser } from "../github";
 
 const drawerWidth = 240;
 

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { CssBaseline, Container } from "@material-ui/core";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 
-import customTheme from "./theme";
-import AppFrame from "./AppFrame";
+import { AppFrame, theme } from "./app/index";
 import LegionData, { LdfNamePair } from "./model";
 
 import ld from "./legion-data.json";
-import ExpansionGrid from "./ExpansionGrid";
+import ExpansionGrid from "./pages/ExpansionGrid";
 import Unit from "./model/unit";
 import Upgrade from "./model/upgrade";
 import { getViewer } from "./github";
@@ -117,31 +117,37 @@ const App: React.FC = () => {
   const handleDrawerClose = () => setOpen(false);
 
   return (
-    <ThemeProvider theme={customTheme}>
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppFrame
-          authenticated={token !== ""}
-          authenticating={authenticating}
-          gitHubUser={gitHubUser}
-          open={open}
-          onDrawerOpen={handleDrawerOpen}
-          onDrawerClose={handleDrawerClose}
-          onLoginClick={handleLoginClick}
-          onLogoutClick={handleLogoutClick}
-        />
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppFrame
+            authenticated={token !== ""}
+            authenticating={authenticating}
+            gitHubUser={gitHubUser}
+            open={open}
+            onDrawerOpen={handleDrawerOpen}
+            onDrawerClose={handleDrawerClose}
+            onLoginClick={handleLoginClick}
+            onLogoutClick={handleLogoutClick}
+          />
 
-        <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
-          <Container maxWidth="lg" className={classes.container}>
-            <ExpansionGrid
-              expansions={legionData.sources}
-              unitNameMap={unitNames}
-              upgradeNameMap={upgradeNames}
-            />
-          </Container>
-        </main>
-      </div>
+          <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
+            <Container maxWidth="lg" className={classes.container}>
+              <Switch>
+                <Route path="/expansions">
+                  <ExpansionGrid
+                    expansions={legionData.sources}
+                    unitNameMap={unitNames}
+                    upgradeNameMap={upgradeNames}
+                  />
+                </Route>
+              </Switch>
+            </Container>
+          </main>
+        </div>
+      </BrowserRouter>
     </ThemeProvider>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import Expansion from "./model/expansion";
+import Expansion from "../model/expansion";
 import {
   Card,
   CardHeader,
@@ -11,7 +11,7 @@ import {
   Grid
 } from "@material-ui/core";
 import clsx from "clsx";
-import { capitalize } from "./util";
+import { capitalize } from "../util";
 
 interface Props {
   data: Expansion;
