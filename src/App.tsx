@@ -5,16 +5,15 @@ import { Switch, Route, BrowserRouter } from "react-router-dom";
 
 import { AppFrame, theme } from "./app/index";
 import LegionData, { LdfNamePair } from "./model";
-
-import ld from "./legion-data.json";
 import ExpansionGrid from "./pages/ExpansionGrid";
 import Unit from "./model/unit";
 import Upgrade from "./model/upgrade";
 import { getViewer } from "./github";
+import { getLegionData, getEmptyLegionData } from "./data";
+import CommandCardGrid from "./pages/CommandCardGrid";
 
 const CLIENT_ID: string = "123a931c6efe1d179e01";
 const REDIRECT_URI = "http://localhost:3000";
-const legionData: LegionData = ld;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,6 +33,9 @@ const useStyles = makeStyles(theme => ({
 
 const App: React.FC = () => {
   const classes = useStyles();
+  const [legionData, setLegionData] = useState<LegionData>(
+    getEmptyLegionData()
+  );
   const [open, setOpen] = useState(
     JSON.parse(localStorage.getItem("open") || "true")
   );
@@ -58,6 +60,7 @@ const App: React.FC = () => {
   }, [gitHubUser]);
 
   useEffect(() => {
+    setLegionData(getLegionData());
     // build a map of unit ldf / name pairs
     const uNames: LdfNamePair = {};
     Object.keys(legionData.units).forEach((key: string) => {
@@ -75,7 +78,9 @@ const App: React.FC = () => {
       });
     });
     setUpgradeNames(upNames);
+  }, [legionData]);
 
+  useEffect(() => {
     // capture the auth token from github if there is one
     const match = window.location.href.match(/\?code=(.*)/);
     if (match) {
@@ -142,6 +147,9 @@ const App: React.FC = () => {
                     unitNameMap={unitNames}
                     upgradeNameMap={upgradeNames}
                   />
+                </Route>
+                <Route path="/command-cards">
+                  <CommandCardGrid commandCards={legionData.commandCards} />
                 </Route>
               </Switch>
             </Container>

@@ -21,11 +21,11 @@ interface Props {
 
 const useStyles = makeStyles(theme => ({
   avatar: {
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.primary.light,
     color: theme.palette.primary.contrastText
   },
   avatarReleased: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
     color: theme.palette.primary.contrastText
   }
 }));

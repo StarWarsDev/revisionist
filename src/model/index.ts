@@ -1,6 +1,7 @@
 import Expansion from "./expansion";
 import { Upgrades } from "./upgrade";
 import { Units } from "./unit";
+import CommandCard from "./command-card";
 
 export enum DefenceDice {
   RED = "red",
@@ -50,12 +51,31 @@ export interface Keyword {
   description: String;
 }
 
+export interface LdfNamePair {
+  [ldf: string]: string;
+}
+
+export interface Range {
+  from?: number;
+  to?: number;
+}
+
+export interface Surge {
+  attack?: "hit" | "crit";
+  defense?: "block";
+}
+
+export interface Weapon {
+  name?: string;
+  range: Range;
+  dice: AttackDice;
+  keywords?: string[];
+  surge: Surge;
+}
+
 export default interface LegionData {
   sources: Expansion[];
   upgrades: Upgrades;
   units: Units;
-}
-
-export interface LdfNamePair {
-  [ldf: string]: string;
+  commandCards: CommandCard[];
 }
