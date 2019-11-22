@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { CssBaseline, Container } from "@material-ui/core";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
+import { Switch, Route, HashRouter } from "react-router-dom";
 
 import { AppFrame, theme } from "./app/index";
 import LegionData, { LdfNamePair } from "./model";
@@ -123,7 +123,7 @@ const App: React.FC = () => {
   const handleDrawerClose = () => setOpen(false);
 
   return (
-    <BrowserRouter basename="/revisionist">
+    <HashRouter basename="/">
       <ThemeProvider theme={theme}>
         <div className={classes.root}>
           <CssBaseline />
@@ -160,7 +160,7 @@ const App: React.FC = () => {
           </main>
         </div>
       </ThemeProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
