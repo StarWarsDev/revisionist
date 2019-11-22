@@ -151,7 +151,7 @@ const App: React.FC = () => {
                   />
                 </Route>
                 <Route path="/units">
-                  <UnitGrid />
+                  <UnitGrid units={legionData.units} />
                 </Route>
                 <Route path="/upgrades">
                   <UpgradeGrid upgrades={legionData.upgrades} />
