@@ -12,6 +12,7 @@ import { getViewer } from "./github";
 import { getLegionData, getEmptyLegionData } from "./data";
 import CommandCardGrid from "./pages/CommandCardGrid";
 import UpgradeGrid from "./pages/UpgradeGrid";
+import { UnitGrid } from "./pages/UnitGrid";
 
 const CLIENT_ID: string = "123a931c6efe1d179e01";
 const REDIRECT_URI = "http://localhost:3000";
@@ -148,6 +149,9 @@ const App: React.FC = () => {
                     unitNameMap={unitNames}
                     upgradeNameMap={upgradeNames}
                   />
+                </Route>
+                <Route path="/units">
+                  <UnitGrid />
                 </Route>
                 <Route path="/upgrades">
                   <UpgradeGrid upgrades={legionData.upgrades} />
