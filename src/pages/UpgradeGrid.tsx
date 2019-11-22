@@ -1,7 +1,7 @@
 import React from "react";
 import PageHeader from "../components/PageHeader";
 import UpgradeModel, { Upgrades } from "../model/upgrade";
-import { Typography, Grid } from "@material-ui/core";
+import { Typography, Grid, Divider } from "@material-ui/core";
 import UpgradeCard from "../components/UpgradeCard";
 
 interface Props {
@@ -17,8 +17,10 @@ export default function UpgradeGrid(props: Props) {
         .sort((a: string, b: string) => (a < b ? -1 : 1))
         .map((key: string) => (
           <div key={`upgrade-group-${key}`}>
-            <Typography variant="h5">{key}</Typography>
-            <Grid container spacing={1} direction="row">
+            <Typography variant="h5" gutterBottom>
+              {key}
+            </Typography>
+            <Grid container spacing={2} direction="row">
               {upgrades[key]
                 .sort((a: UpgradeModel, b: UpgradeModel) =>
                   a.points === b.points
@@ -35,6 +37,9 @@ export default function UpgradeGrid(props: Props) {
                   </Grid>
                 ))}
             </Grid>
+            <br />
+            <Divider />
+            <br />
           </div>
         ))}
     </React.Fragment>

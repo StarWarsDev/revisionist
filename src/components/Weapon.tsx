@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader, CardContent, Grid } from "@material-ui/core";
+import { Card, CardContent, Grid, Typography } from "@material-ui/core";
 import {
   Weapon as WeaponModel,
   Range as RangeModel,
@@ -80,8 +80,12 @@ export default function Weapon(props: Props) {
   const { weapon } = props;
   return (
     <Card raised>
-      {weapon.name && <CardHeader title={weapon.name} />}
       <CardContent>
+        {weapon.name && (
+          <Typography variant="subtitle1" component="h2" gutterBottom>
+            {weapon.name}
+          </Typography>
+        )}
         <Range range={weapon.range} />
         <Dice dice={weapon.dice} />
         {weapon.surge && <Surge surge={weapon.surge} />}
