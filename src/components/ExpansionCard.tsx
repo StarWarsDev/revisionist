@@ -10,7 +10,6 @@ import {
   Typography,
   Grid
 } from "@material-ui/core";
-import clsx from "clsx";
 import { capitalize } from "../util";
 
 interface Props {
@@ -20,12 +19,8 @@ interface Props {
 }
 
 const useStyles = makeStyles(theme => ({
-  avatar: {
+  avatarUnreleased: {
     backgroundColor: theme.palette.primary.light,
-    color: theme.palette.primary.contrastText
-  },
-  avatarReleased: {
-    backgroundColor: theme.palette.secondary.main,
     color: theme.palette.primary.contrastText
   }
 }));
@@ -39,16 +34,11 @@ export default function ExpansionCard(props: Props) {
   }
 
   return (
-    <Card>
+    <Card id={data.ldf}>
       <CardHeader
         avatar={
           <Tooltip title={capitalize(tooltipText)}>
-            <Avatar
-              className={clsx(
-                classes.avatar,
-                data.released && classes.avatarReleased
-              )}
-            >
+            <Avatar className={!data.released ? classes.avatarUnreleased : ""}>
               {data.wave}
             </Avatar>
           </Tooltip>

@@ -41,14 +41,14 @@ export enum Slot {
 }
 
 export interface AttackDice {
-  black?: Number;
-  red?: Number;
-  white?: Number;
+  black?: number;
+  red?: number;
+  white?: number;
 }
 
 export interface Keyword {
-  name: String;
-  description: String;
+  name: string;
+  description?: string;
 }
 
 export interface LdfNamePair {
@@ -69,8 +69,8 @@ export interface Weapon {
   name?: string;
   range: Range;
   dice: AttackDice;
-  keywords?: string[];
-  surge: Surge;
+  keywords?: (string | Keyword)[];
+  surge?: Surge;
 }
 
 export default interface LegionData {

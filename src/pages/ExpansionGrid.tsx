@@ -3,6 +3,7 @@ import { LdfNamePair } from "../model";
 import { Grid } from "@material-ui/core";
 import ExpansionCard from "../components/ExpansionCard";
 import Expansion from "../model/expansion";
+import PageHeader from "../components/PageHeader";
 
 interface Props {
   expansions: Expansion[];
@@ -40,23 +41,26 @@ export default function ExpansionGrid(props: Props) {
   };
 
   return (
-    <Grid
-      container
-      spacing={2}
-      direction="row"
-      justify="space-between"
-      alignItems="stretch"
-    >
-      {/* Expansions */}
-      {expansions.sort(sorter).map((expansion: Expansion) => (
-        <Grid key={expansion.ldf} item xs={12}>
-          <ExpansionCard
-            data={expansion}
-            lookupUnitName={findUnitName}
-            lookupUpgradeName={findUpgradeName}
-          />
-        </Grid>
-      ))}
-    </Grid>
+    <React.Fragment>
+      <PageHeader title="Expansions" />
+      <Grid
+        container
+        spacing={2}
+        direction="row"
+        justify="space-between"
+        alignItems="stretch"
+      >
+        {/* Expansions */}
+        {expansions.sort(sorter).map((expansion: Expansion) => (
+          <Grid key={expansion.ldf} item xs={12}>
+            <ExpansionCard
+              data={expansion}
+              lookupUnitName={findUnitName}
+              lookupUpgradeName={findUpgradeName}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    </React.Fragment>
   );
 }

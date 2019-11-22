@@ -1,7 +1,13 @@
 import React from "react";
 import { Card, CardHeader, CardContent, Grid } from "@material-ui/core";
-import { Weapon as WeaponModel, Range as RangeModel } from "../model";
+import {
+  Weapon as WeaponModel,
+  Range as RangeModel,
+  Keyword,
+  AttackDice
+} from "../model";
 import Surge from "./Surge";
+import { joinKeywords } from "../util";
 
 interface RangeProps {
   range: RangeModel;
@@ -28,12 +34,42 @@ function Range(props: RangeProps) {
 }
 
 interface KeywordsProps {
-  keywords: string[];
+  keywords: (string | Keyword)[];
 }
 
 function Keywords(props: KeywordsProps) {
   const { keywords } = props;
-  return <div>Keywords: {keywords.join(", ")}</div>;
+  return <div>Keywords: {joinKeywords(keywords)}</div>;
+}
+
+interface DiceProps {
+  dice: AttackDice;
+}
+
+function Dice(props: DiceProps) {
+  const { dice } = props;
+  return (
+    <Grid container direction="row" spacing={1}>
+      <Grid item xs={3}>
+        Dice:
+      </Grid>
+      {dice.red && (
+        <Grid item xs={3}>
+          Red: {dice.red}
+        </Grid>
+      )}
+      {dice.black && (
+        <Grid item xs={3}>
+          Black: {dice.black}
+        </Grid>
+      )}
+      {dice.white && (
+        <Grid item xs={3}>
+          White: {dice.white}
+        </Grid>
+      )}
+    </Grid>
+  );
 }
 
 interface Props {
@@ -47,6 +83,7 @@ export default function Weapon(props: Props) {
       {weapon.name && <CardHeader title={weapon.name} />}
       <CardContent>
         <Range range={weapon.range} />
+        <Dice dice={weapon.dice} />
         {weapon.surge && <Surge surge={weapon.surge} />}
         {weapon.keywords && <Keywords keywords={weapon.keywords} />}
       </CardContent>

@@ -1,4 +1,4 @@
-import { Keyword, Side, Slot } from "./index";
+import { Keyword, Side, Slot, Weapon } from "./index";
 
 interface UpgradeRestrictions {
   ldf: string;
@@ -10,12 +10,13 @@ export default interface Upgrade {
   name: string;
   unique?: boolean;
   description?: string;
-  side: Side;
+  side?: string;
   exhaust?: boolean;
   restrictions?: UpgradeRestrictions;
-  slot: Slot;
-  points: Number;
-  keywords: Keyword[];
+  slot: string;
+  points: number;
+  keywords?: (string | Keyword)[];
+  weapon?: Weapon;
 }
 
 export interface Upgrades {
