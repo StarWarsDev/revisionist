@@ -8,7 +8,7 @@ interface Props {
 
 export function UnitGrid(props: Props) {
   const { units } = props;
-  console.log(Object.keys(units));
+  console.log(Object.keys(units), units);
   return (
     <React.Fragment>
       <PageHeader title="Units" />
