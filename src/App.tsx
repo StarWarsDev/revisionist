@@ -123,7 +123,7 @@ const App: React.FC = () => {
   const handleDrawerClose = () => setOpen(false);
 
   return (
-    <BrowserRouter basename="/">
+    <BrowserRouter basename="/revisionist">
       <ThemeProvider theme={theme}>
         <div className={classes.root}>
           <CssBaseline />
