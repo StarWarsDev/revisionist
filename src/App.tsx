@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { CssBaseline, Container } from "@material-ui/core";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 
 import { AppFrame, theme } from "./app/index";
 import LegionData, { LdfNamePair } from "./model";
@@ -123,42 +123,44 @@ const App: React.FC = () => {
   const handleDrawerClose = () => setOpen(false);
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppFrame
-          authenticated={token !== ""}
-          authenticating={authenticating}
-          gitHubUser={gitHubUser}
-          open={open}
-          onDrawerOpen={handleDrawerOpen}
-          onDrawerClose={handleDrawerClose}
-          onLoginClick={handleLoginClick}
-          onLogoutClick={handleLogoutClick}
-        />
+    <BrowserRouter basename="/">
+      <ThemeProvider theme={theme}>
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppFrame
+            authenticated={token !== ""}
+            authenticating={authenticating}
+            gitHubUser={gitHubUser}
+            open={open}
+            onDrawerOpen={handleDrawerOpen}
+            onDrawerClose={handleDrawerClose}
+            onLoginClick={handleLoginClick}
+            onLogoutClick={handleLogoutClick}
+          />
 
-        <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
-          <Container maxWidth="lg" className={classes.container}>
-            <Switch>
-              <Route path="/expansions">
-                <ExpansionGrid
-                  expansions={legionData.sources}
-                  unitNameMap={unitNames}
-                  upgradeNameMap={upgradeNames}
-                />
-              </Route>
-              <Route path="/upgrades">
-                <UpgradeGrid upgrades={legionData.upgrades} />
-              </Route>
-              <Route path="/command-cards">
-                <CommandCardGrid commandCards={legionData.commandCards} />
-              </Route>
-            </Switch>
-          </Container>
-        </main>
-      </div>
-    </ThemeProvider>
+          <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
+            <Container maxWidth="lg" className={classes.container}>
+              <Switch>
+                <Route path="/expansions">
+                  <ExpansionGrid
+                    expansions={legionData.sources}
+                    unitNameMap={unitNames}
+                    upgradeNameMap={upgradeNames}
+                  />
+                </Route>
+                <Route path="/upgrades">
+                  <UpgradeGrid upgrades={legionData.upgrades} />
+                </Route>
+                <Route path="/command-cards">
+                  <CommandCardGrid commandCards={legionData.commandCards} />
+                </Route>
+              </Switch>
+            </Container>
+          </main>
+        </div>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 };
 
