@@ -9,7 +9,6 @@ import {
   Divider
 } from "@material-ui/core";
 import Anchor from "./Anchor";
-import { Keyword } from "../model";
 import Weapon from "./Weapon";
 import { joinKeywords } from "../util";
 
