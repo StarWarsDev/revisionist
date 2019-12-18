@@ -15,9 +15,9 @@ import UpgradeGrid from "./pages/UpgradeGrid";
 import { UnitGrid } from "./pages/UnitGrid";
 import {LegionDataProvider} from "./data/LegionDataStore";
 
-const CLIENT_ID: string = process.env.CLIENT_ID || "123a931c6efe1d179e01";
-const REDIRECT_URI: string = process.env.REDIRECT_URI || "http://localhost:3000";
-const gatekeeper: string = process.env.GATEKEEPER || "https://swd-gatekeeper-dev.herokuapp.com";
+const CLIENT_ID: string | undefined = process.env.REACT_APP_CLIENT_ID;
+const REDIRECT_URI: string | undefined = process.env.REACT_APP_REDIRECT_URI;
+const gatekeeper: string | undefined = process.env.REACT_APP_GATEKEEPER;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -145,6 +145,12 @@ const App: React.FC = () => {
             <div className={classes.appBarSpacer} />
             <LegionDataProvider>
               <Container maxWidth="lg" className={classes.container}>
+                <ul>
+                  <li>{process.env.NODE_ENV}</li>
+                  <li>{gatekeeper}</li>
+                  <li>{process.env.REACT_APP_CLIENT_ID}</li>
+                  <li>{REDIRECT_URI}</li>
+                </ul>
                 <Switch>
                   <Route path="/expansions">
                     <ExpansionGrid

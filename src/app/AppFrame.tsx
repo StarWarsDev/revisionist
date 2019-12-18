@@ -180,7 +180,7 @@ export default function AppFrame(props: Props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Star Wars Legion Data ({process.env.NODE_ENV})
+            Star Wars Legion Data
           </Typography>
           <div className={classes.loginWrapper}>
             {!authenticated && (
