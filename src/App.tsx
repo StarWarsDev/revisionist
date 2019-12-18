@@ -145,12 +145,6 @@ const App: React.FC = () => {
             <div className={classes.appBarSpacer} />
             <LegionDataProvider>
               <Container maxWidth="lg" className={classes.container}>
-                <ul>
-                  <li>{process.env.NODE_ENV}</li>
-                  <li>{gatekeeper}</li>
-                  <li>{process.env.REACT_APP_CLIENT_ID}</li>
-                  <li>{REDIRECT_URI}</li>
-                </ul>
                 <Switch>
                   <Route path="/expansions">
                     <ExpansionGrid
