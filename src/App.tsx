@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { CssBaseline, Container } from "@material-ui/core";
 import { Switch, Route, HashRouter } from "react-router-dom";
-
 import { AppFrame, theme } from "./app/index";
-import LegionData, { LdfNamePair } from "./model";
 import ExpansionGrid from "./pages/ExpansionGrid";
-import Unit from "./model/unit";
-import Upgrade from "./model/upgrade";
 import { getViewer } from "./github";
-import { getLegionData, getEmptyLegionData } from "./data";
 import CommandCardGrid from "./pages/CommandCardGrid";
 import UpgradeGrid from "./pages/UpgradeGrid";
 import { UnitGrid } from "./pages/UnitGrid";
-import {LegionDataProvider} from "./data/LegionDataStore";
+import {useStore} from "./data/LegionDataStore";
+import {fetchLegionDataForVersion} from "./data";
+import LegionData, {LdfNamePair} from "./model";
+import Unit from "./model/unit";
+import Upgrade from "./model/upgrade";
 
 const CLIENT_ID: string | undefined = process.env.REACT_APP_CLIENT_ID;
 const REDIRECT_URI: string | undefined = process.env.REACT_APP_REDIRECT_URI;
@@ -36,15 +35,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const App: React.FC = () => {
+  const { dispatch } = useStore();
   const classes = useStyles();
-  const [legionData, setLegionData] = useState<LegionData>(
-    getEmptyLegionData()
-  );
   const [open, setOpen] = useState(
     JSON.parse(localStorage.getItem("open") || "true")
   );
-  const [unitNames, setUnitNames] = useState({});
-  const [upgradeNames, setUpgradeNames] = useState({});
   const [authenticating, setAuthenticating] = useState(false);
   const [token, setToken] = useState(sessionStorage.getItem("token") || "");
   const [gitHubUser, setGitHubUser] = useState(
@@ -64,27 +59,29 @@ const App: React.FC = () => {
   }, [gitHubUser]);
 
   useEffect(() => {
-    setLegionData(getLegionData());
-    // build a map of unit ldf / name pairs
-    const uNames: LdfNamePair = {};
-    Object.keys(legionData.units).forEach((key: string) => {
-      legionData.units[key].forEach((unit: Unit) => {
-        uNames[unit.ldf] = unit.name;
-      });
-    });
-    setUnitNames(uNames);
+    // fetch the legionData
+    fetchLegionDataForVersion(`${process.env.REACT_APP_LEGION_DATA_VERSION}`)
+      .then((legionData: LegionData) => {
+        // build a map of unit ldf / name pairs
+        const uNames: LdfNamePair = {};
+        Object.keys(legionData.units).forEach((key: string) => {
+          legionData.units[key].forEach((unit: Unit) => {
+            uNames[unit.ldf] = unit.name;
+          });
+        });
 
-    // build a map of upgrade ldf / name pairs
-    const upNames: LdfNamePair = {};
-    Object.keys(legionData.upgrades).forEach((key: string) => {
-      legionData.upgrades[key].forEach((upgrade: Upgrade) => {
-        upNames[upgrade.ldf] = upgrade.name;
-      });
-    });
-    setUpgradeNames(upNames);
-  }, [legionData]);
+        // build a map of upgrade ldf / name pairs
+        const upNames: LdfNamePair = {};
+        Object.keys(legionData.upgrades).forEach((key: string) => {
+          legionData.upgrades[key].forEach((upgrade: Upgrade) => {
+            upNames[upgrade.ldf] = upgrade.name;
+          });
+        });
 
-  useEffect(() => {
+        dispatch({ type: "unit-names-changed", unitNames: uNames});
+        dispatch({ type: "upgrade-names-changed", upgradeNames: upNames});
+        dispatch({ type: "legion-data-changed", data: legionData });
+      });
     // capture the auth token from github if there is one
     const match = window.location.href.match(/\?code=(.*)/);
     if (match) {
@@ -107,7 +104,7 @@ const App: React.FC = () => {
           });
       }
     }
-  }, []);
+  }, [dispatch]);
 
   const handleLoginClick = () => {
     setAuthenticating(true);
@@ -143,27 +140,22 @@ const App: React.FC = () => {
 
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            <LegionDataProvider>
-              <Container maxWidth="lg" className={classes.container}>
-                <Switch>
-                  <Route path="/expansions">
-                    <ExpansionGrid
-                        unitNameMap={unitNames}
-                        upgradeNameMap={upgradeNames}
-                    />
-                  </Route>
-                  <Route path="/units">
-                    <UnitGrid />
-                  </Route>
-                  <Route path="/upgrades">
-                    <UpgradeGrid />
-                  </Route>
-                  <Route path="/command-cards">
-                    <CommandCardGrid />
-                  </Route>
-                </Switch>
-              </Container>
-            </LegionDataProvider>
+            <Container maxWidth="lg" className={classes.container}>
+              <Switch>
+                <Route path="/expansions">
+                  <ExpansionGrid />
+                </Route>
+                <Route path="/units">
+                  <UnitGrid />
+                </Route>
+                <Route path="/upgrades">
+                  <UpgradeGrid />
+                </Route>
+                <Route path="/command-cards">
+                  <CommandCardGrid />
+                </Route>
+              </Switch>
+            </Container>
           </main>
         </div>
       </ThemeProvider>

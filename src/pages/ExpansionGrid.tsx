@@ -1,15 +1,9 @@
 import React from "react";
-import { LdfNamePair } from "../model";
 import { Grid } from "@material-ui/core";
 import ExpansionCard from "../components/ExpansionCard";
 import Expansion from "../model/expansion";
 import PageHeader from "../components/PageHeader";
-import {useLegionData} from "../data/LegionDataStore";
-
-interface Props {
-  unitNameMap: LdfNamePair;
-  upgradeNameMap: LdfNamePair;
-}
+import {useStore} from "../data/LegionDataStore";
 
 function sorter(a: Expansion, b: Expansion): number {
   // if the waves are the same then sort on name
@@ -21,12 +15,13 @@ function sorter(a: Expansion, b: Expansion): number {
   return a.wave < b.wave ? -1 : 1;
 }
 
-export default function ExpansionGrid(props: Props) {
-  const { sources: expansions } = useLegionData();
-  const { unitNameMap, upgradeNameMap } = props;
+export default function ExpansionGrid() {
+  const { state } = useStore();
+  const { data, unitNames, upgradeNames } = state;
+  const { sources: expansions } = data;
 
   const findUnitName = (ldf: string): string => {
-    const name: string = unitNameMap[ldf];
+    const name: string = unitNames[ldf];
     if (!name) {
       return ldf;
     }
@@ -34,7 +29,7 @@ export default function ExpansionGrid(props: Props) {
   };
 
   const findUpgradeName = (ldf: string): string => {
-    const name: string = upgradeNameMap[ldf];
+    const name: string = upgradeNames[ldf];
     if (!name) {
       return ldf;
     }

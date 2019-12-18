@@ -3,10 +3,11 @@ import PageHeader from "../components/PageHeader";
 import UnitModel  from "../model/unit";
 import { Typography, Divider, Grid } from "@material-ui/core";
 import Unit from "../components/Unit";
-import {useLegionData} from "../data/LegionDataStore";
+import {useStore} from "../data/LegionDataStore";
 
 export function UnitGrid() {
-  const { units } = useLegionData();
+  const { state } = useStore();
+  const { units } = state.data;
 
   return (
     <React.Fragment>

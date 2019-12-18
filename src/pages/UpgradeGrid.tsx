@@ -3,11 +3,12 @@ import PageHeader from "../components/PageHeader";
 import UpgradeModel from "../model/upgrade";
 import { Typography, Grid, Divider } from "@material-ui/core";
 import UpgradeCard from "../components/UpgradeCard";
-import {useLegionData} from "../data/LegionDataStore";
+import {useStore} from "../data/LegionDataStore";
 
 
 export default function UpgradeGrid() {
-  const { upgrades } = useLegionData();
+  const { state } = useStore();
+  const { upgrades } = state.data;
   return (
     <React.Fragment>
       <PageHeader title="Upgrades" />
