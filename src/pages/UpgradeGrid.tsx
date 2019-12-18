@@ -1,15 +1,13 @@
 import React from "react";
 import PageHeader from "../components/PageHeader";
-import UpgradeModel, { Upgrades } from "../model/upgrade";
+import UpgradeModel from "../model/upgrade";
 import { Typography, Grid, Divider } from "@material-ui/core";
 import UpgradeCard from "../components/UpgradeCard";
+import {useLegionData} from "../data/LegionDataStore";
 
-interface Props {
-  upgrades: Upgrades;
-}
 
-export default function UpgradeGrid(props: Props) {
-  const { upgrades } = props;
+export default function UpgradeGrid() {
+  const { upgrades } = useLegionData();
   return (
     <React.Fragment>
       <PageHeader title="Upgrades" />

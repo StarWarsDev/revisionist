@@ -21,3 +21,7 @@ jobs:
           build_dir: build
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+          REDIRECT_URI: "https://starwarsdev.github.io/revisionist/"
+          CLIENT_ID: 6db58777e72871fa0a21
+          GATEKEEPER: https://swd-gatekeeper.herokuapp.com
+

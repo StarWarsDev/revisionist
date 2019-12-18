@@ -13,9 +13,11 @@ import { getLegionData, getEmptyLegionData } from "./data";
 import CommandCardGrid from "./pages/CommandCardGrid";
 import UpgradeGrid from "./pages/UpgradeGrid";
 import { UnitGrid } from "./pages/UnitGrid";
+import {LegionDataProvider} from "./data/LegionDataStore";
 
-const CLIENT_ID: string = "123a931c6efe1d179e01";
-const REDIRECT_URI = "http://localhost:3000";
+const CLIENT_ID: string = process.env.CLIENT_ID || "123a931c6efe1d179e01";
+const REDIRECT_URI: string = process.env.REDIRECT_URI || "http://localhost:3000";
+const gatekeeper: string = process.env.GATEKEEPER || "https://swd-gatekeeper-dev.herokuapp.com";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -90,7 +92,7 @@ const App: React.FC = () => {
 
       if (code) {
         setAuthenticating(true);
-        fetch(`https://swd-gatekeeper.herokuapp.com/authenticate/${code}`)
+        fetch(`${gatekeeper}/authenticate/${code}`)
           .then(response => response.json())
           .then(({ token }) => {
             getViewer(token).then(ghUser => {
@@ -141,26 +143,27 @@ const App: React.FC = () => {
 
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            <Container maxWidth="lg" className={classes.container}>
-              <Switch>
-                <Route path="/expansions">
-                  <ExpansionGrid
-                    expansions={legionData.sources}
-                    unitNameMap={unitNames}
-                    upgradeNameMap={upgradeNames}
-                  />
-                </Route>
-                <Route path="/units">
-                  <UnitGrid units={legionData.units} />
-                </Route>
-                <Route path="/upgrades">
-                  <UpgradeGrid upgrades={legionData.upgrades} />
-                </Route>
-                <Route path="/command-cards">
-                  <CommandCardGrid commandCards={legionData.commandCards} />
-                </Route>
-              </Switch>
-            </Container>
+            <LegionDataProvider>
+              <Container maxWidth="lg" className={classes.container}>
+                <Switch>
+                  <Route path="/expansions">
+                    <ExpansionGrid
+                        unitNameMap={unitNames}
+                        upgradeNameMap={upgradeNames}
+                    />
+                  </Route>
+                  <Route path="/units">
+                    <UnitGrid />
+                  </Route>
+                  <Route path="/upgrades">
+                    <UpgradeGrid />
+                  </Route>
+                  <Route path="/command-cards">
+                    <CommandCardGrid />
+                  </Route>
+                </Switch>
+              </Container>
+            </LegionDataProvider>
           </main>
         </div>
       </ThemeProvider>

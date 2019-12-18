@@ -4,9 +4,9 @@ import { Grid } from "@material-ui/core";
 import ExpansionCard from "../components/ExpansionCard";
 import Expansion from "../model/expansion";
 import PageHeader from "../components/PageHeader";
+import {useLegionData} from "../data/LegionDataStore";
 
 interface Props {
-  expansions: Expansion[];
   unitNameMap: LdfNamePair;
   upgradeNameMap: LdfNamePair;
 }
@@ -22,7 +22,8 @@ function sorter(a: Expansion, b: Expansion): number {
 }
 
 export default function ExpansionGrid(props: Props) {
-  const { expansions, unitNameMap, upgradeNameMap } = props;
+  const { sources: expansions } = useLegionData();
+  const { unitNameMap, upgradeNameMap } = props;
 
   const findUnitName = (ldf: string): string => {
     const name: string = unitNameMap[ldf];

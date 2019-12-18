@@ -1,15 +1,12 @@
 import React from "react";
 import PageHeader from "../components/PageHeader";
-import UnitModel, { Units } from "../model/unit";
+import UnitModel  from "../model/unit";
 import { Typography, Divider, Grid } from "@material-ui/core";
 import Unit from "../components/Unit";
+import {useLegionData} from "../data/LegionDataStore";
 
-interface Props {
-  units: Units;
-}
-
-export function UnitGrid(props: Props) {
-  const { units } = props;
+export function UnitGrid() {
+  const { units } = useLegionData();
 
   return (
     <React.Fragment>

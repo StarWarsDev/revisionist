@@ -3,13 +3,11 @@ import CommandCard from "../model/command-card";
 import CommandCardCard from "../components/CommandCardCard";
 import { Grid } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
+import {useLegionData} from "../data/LegionDataStore";
 
-interface Props {
-  commandCards: CommandCard[];
-}
 
-export default function CommandCardGrid(props: Props) {
-  const { commandCards } = props;
+export default function CommandCardGrid() {
+  const { commandCards } = useLegionData();
   return (
     <React.Fragment>
       <PageHeader title="Command Cards" />
